@@ -8,6 +8,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\GuestHouseController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\WishlistController;
+use App\Models\Wishlist;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,17 +38,28 @@ Route::delete('/dashboard/reservation/delete', [ReservationController::class, 'd
 Route::get('/dashboard', [HomeController::class, 'index']);
 Route::get('/dashboard/reservations', [HomeController::class, 'show']);
 
+Route::post('/wishlist/save', [WishlistController::class, 'store']);
+Route::delete('/wishlist/unsave',[WishlistController::class, 'destroy']);
+Route::get('/wishlist', [WishlistController::class, 'index']);
+
 Route::get('/', [GuestHouseController::class, 'index']);
 Route::post('/logout', [UserController::class, 'logout']);
 Route::get('/register', [UserController::class, 'create']);
 Route::post('/register', [UserController::class, 'store']);
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/users/authenticate', [UserController::class, 'authenticate']);
+Route::get('/account', [UserController::class, 'show'])->middleware('auth');
+Route::put('/account/update/name', [UserController::class, 'update_name']);
+Route::put('/account/update/email', [UserController::class, 'update_email']);
+Route::post('/account/add/phone', [UserController::class, 'add_phone']);
+Route::put('/account/update/phone', [UserController::class, 'add_phone']);
+Route::post('/account/add/address', [UserController::class, 'add_address']);
+Route::put('/account/update/address', [UserController::class, 'add_address']);
 
 Route::post('/payment/{guesthouse}', [GuestHouseController::class, 'payment'])->middleware('auth');
 Route::delete('/rooms/{guesthouse}', [GuestHouseController::class, 'destroy']);
 Route::get('/rooms/{id}', [GuestHouseController::class, 'show']);
-Route::put('/rooms/{guesthouse}', [GuestHouseController::class, 'update']);
+Route::put('/rooms/{guesthouse}', [GuestHouseController::class, 'update'])->middleware('auth');
 Route::get('rooms/{guesthouse}/edit', [GuestHouseController::class, 'edit'])->middleware('auth');
 Route::get('rooms/{guesthouse}/delete', [GuestHouseController::class, 'delete']);
 Route::get('/guesthouses/create', [GuestHouseController::class, 'create']);

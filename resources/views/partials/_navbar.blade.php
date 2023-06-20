@@ -29,35 +29,31 @@
     }
 
     .offcanvas .offcanvas-body .rounded:hover {
-        background-color: whitesmoke;
+        background-color: rgba(0, 0, 0, 0.1);
         color: blue;
     }
 
-    .dropdown-menu a:hover {
-        color: blue;
-        background-color: whitesmoke;
+    .dropdown-menu .dropdown-item:hover {
+        background-color: rgba(0, 0, 0, 0.1)
     }
-
+ 
     .stuff .col-2:hover {
-        background-color: whitesmoke;
-        border: 1px solid black
+        background-color: rgba(0, 0, 0, 0.1);
     }
 
     .container .header .navbar .menu-icon button:hover {
-        background-color: whitesmoke;
+        background-color: rgba(0, 0, 0, 0.1);
+
     }
 
     .container .header .navbar .notif-icon .dropstart:hover {
-        background-color: whitesmoke;
+        background-color: rgba(0, 0, 0, 0.1);
+
     }
 
     .dropdown-menu-right {
-        right: 0 !important;
+        right: 0;
         left: auto !important;
-    }
-
-    .container .header .navbar .notif-icon .profile-div .col-2:hover button {
-        background-color: whitesmoke;
     }
 
     #search-results {
@@ -69,6 +65,10 @@
         padding: 10px;
         display: none;
         border-radius: 15px;
+    }
+    #search-input:focus {
+        box-shadow: none;
+        border: 1px solid rgb(222,226,230);
     }
 </style>
 <div class="container ">
@@ -90,7 +90,7 @@
                         <span class="input-group-text rounded-start-pill bg-transparent border-end-0"><i
                                 class="bi bi-search"></i></span>
                         <input type="text" id="search-input" name="search" class="form-control rounded-end-pill border-start-0"
-                            placeholder="Search">
+                            placeholder="Search" >
                     </div>
                 </form>
             </div>
@@ -121,6 +121,8 @@
                                 <i class="bi bi-person-circle "></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                <li>  <a href="/account"> <button class="dropdown-item ">Account</button> </a> </li>
+                                <li>  <a href="/wishlist"> <button class="dropdown-item ">Wishlists</button> </a> </li>
                                 <li> <form method="POST" action="/logout"> @csrf <button class="dropdown-item submit">Log out</button> </form> </li>
                             </ul>
                         </div>
@@ -134,17 +136,17 @@
 
             <div class="col-lg-3 col-md-3 text-center stuff ">
                 <div class="row">
-                    <div class="col-2 mx-1 ms-4">
-                        <a href="/" class=" text-dark " style="text-decoration: none">Home</a>
+                    <div class="col-2 ms-4">
+                        <a href="/" >Home</a>
                     </div>
-                    <div class="col-2 mx-1">
-                        <a href="/about" class=" text-dark" style="text-decoration: none">About</a>
+                    <div class="col-2">
+                        <a href="/about">About</a>
                     </div>
-                    <div class="col-2 mx-1 ">
-                        <a href="/login" class="text-dark" style="text-decoration: none">Login</a>
+                    <div class="col-2 ">
+                        <a href="/login">Login</a>
                     </div>
-                    <div class="col-2 mx-1">
-                        <a href="/register" class=" text-dark" style="text-decoration: none">Signup</a>
+                    <div class="col-2">
+                        <a href="/register">Signup</a>
                     </div>
                 </div>
             </div>

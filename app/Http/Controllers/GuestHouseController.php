@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GuestHouses;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Faker\Provider\Image;
 
@@ -18,9 +19,16 @@ class GuestHouseController extends Controller
 
     //show singular guest house
     public function show(GuestHouses $id) {
-        return view('guesthouses.show', [
-            'guesthouse' => $id
-        ]);
+        if(auth()->user()) {
+            $wishlist = Wishlist::where('user_id', auth()->user()->id)
+                            ->where('room_id', $id->id)
+                            ->first();
+            return view('guesthouses.show', ['guesthouse' => $id, 'wishlist' => $wishlist]);
+            
+        }
+        else {
+            return view('guesthouses.show', ['guesthouse' => $id]);
+        }
     }
 
     //create guest house

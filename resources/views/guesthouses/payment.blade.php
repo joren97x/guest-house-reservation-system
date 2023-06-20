@@ -1,5 +1,5 @@
 @extends('master')
-
+@section('title', 'Confirm Payment')
 @section('content')
     
     <div class="container">
@@ -15,9 +15,9 @@
                         <label for="">Email</label>
                         <input type="text" id="email" name="email" value="{{ auth()->user()->email }}" class="form-control my-2" placeholder="Address">
                         <label for="">Contact Number</label>
-                        <input type="number" id="contact_no" name="contact_no" value="{{ old('contact_no') }}" class="form-control my-2" placeholder="Contact Number">
+                        <input type="number" id="contact_no" name="contact_no" value="{{ auth()->user()->contact_no }}" class="form-control my-2" placeholder="Contact Number">
                         <label for="">Address</label>
-                        <input type="text" id="address" name="address" value="{{ old('address') }}" class="form-control my-2" placeholder="Address">
+                        <input type="text" id="address" name="address" value="{{ auth()->user()->address }}" class="form-control my-2" placeholder="Address">
                         <label for="">Payment Process</label>
                         <select id="payment_process" name="payment_process" class="form-select">
                             <option value="paypal">Paypal</option>

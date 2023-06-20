@@ -40,6 +40,10 @@ class UserController extends Controller
         return redirect('/')->with('message', 'Created and logged in successfully');
     }
 
+    public function show() {
+        return view('users.show');
+    }
+
     public function authenticate(Request $request) {
         $form = $request->validate([
             'email' => ['required', 'email'],
@@ -54,6 +58,45 @@ class UserController extends Controller
             return back()->withErrors(['email' => 'Invalid Credentials'])->onlyInput('email');
         }
     }
+
+    public function update_name(Request $request) {
+        
+        $user = User::find(auth()->user()->id);
+        $user->name = $request->name;
+        $user->save();
+        return back()->with('message', 'Successfully changed name!');
+    }
+
+    public function update_email(Request $request) {
+        $user = User::find(auth()->user()->id);
+        $user->email = $request->email;
+        $user->save();
+        return back()->with('message', 'Successfully changed email!');
+    }
+
+    public function add_phone(Request $request) {
+        $user = User::find(auth()->user()->id);
+        $user->contact_no = $request->contact_no;
+        $user->save();
+        return back()->with('message', 'Successfully added contact number!');
+    }
+
+    // public function update_phone(Request $request) {
+    //     $user = User::find(auth()->user()->id);
+    //     $user->contact_no = $request->
+    // }
+
+    public function add_address(Request $request) {
+        $user = User::find(auth()->user()->id);
+        $user->address = $request->address;
+        $user->save();
+        return back()->with('message', 'Successfully added Address');
+    }
+
+    // public function update_address(Request $request) {
+    //     $user = User::find(auth()->user()->id);
+
+    // }
 
     
 

@@ -111,13 +111,21 @@
         font-weight: bold;
         cursor: pointer;
     }
+    #save_icon:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    #unsave_icon:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
 </style>
 @include('partials._navbar')
 
 <div class="container mt-5" style="margin-bottom: 100px;">
   <div class="row mb-3">
     <div class="col-10">
-      <h1 id="house_title">{{$guesthouse->room_name}}</h1>  
+      <h1 id="house_title">{{$guesthouse->room_name}}  </h1>  
     </div>
     @auth
     @if ( auth()->user()->role == "admin" )
@@ -130,6 +138,18 @@
                 <button class="btn text-danger">Delete</button>
             </form>
         </div>
+    @else 
+
+        @if($wishlist)
+        <div class="col-2 mt-4 text-end">
+            <span class="mt-3" id="unsave_icon"> <i class="bi bi-heart-fill text-danger "></i> saved </span>
+        </div>
+        @else 
+        <div class="col-2 mt-4 text-end">
+            <span class="mt-3" id="save_icon"> <i class="bi bi-heart "></i> save </span>
+        </div>
+        @endif
+
     @endif
     @endauth
     @php 
@@ -253,6 +273,52 @@
 
         document.body.removeChild(overlay);
     }
+
+@if(auth()->user())
+    $('#save_icon').on('click', function() {
+        
+        $.ajax({
+            url: '/wishlist/save',
+            type: 'POST',
+            data: {
+                user_id: "{{ auth()->user()->id }}",
+                room_id: "{{ $guesthouse->id }}",
+                _token: " {{ csrf_token() }} "
+            },
+            success: function(data) {
+                console.log(data);
+                $('#save_icon').html('<i class="bi bi-heart-fill text-danger"></i> saved');
+                $('#save_icon').attr('id', 'unsave_icon');
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        })
+
+    })
+@if(isset($wishlist))
+    $('#unsave_icon').on('click', function() {
+        
+        $.ajax({
+            url: '/wishlist/unsave',
+            type: 'DELETE',
+            data: {
+                id: "{{ $wishlist->id }}",
+                _token: " {{ csrf_token() }} "
+            },
+            success: function(data) {
+                console.log(data);
+                $('#unsave_icon').html('<i class="bi bi-heart"></i> save');
+                $('#unsave_icon').attr('id', 'save_icon');
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        })
+
+    })
+@endif
+@endif
 
 </script>
 @include('partials._footer')
