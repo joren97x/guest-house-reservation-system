@@ -7,6 +7,8 @@ use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Faker\Provider\Image;
 
+use function PHPSTORM_META\type;
+
 class GuestHouseController extends Controller
 {
     //show all guest houses
@@ -45,13 +47,26 @@ class GuestHouseController extends Controller
     }
 
     public function update(Request $request, GuestHouses $guesthouse) {
+        $houseImages = '';
+        $uploadedFiles = $request->file('room_image');
+        for($i = 0; $i < count($uploadedFiles); $i++) {
+            if($i != count($uploadedFiles)-1) {
+                $houseImages .= $uploadedFiles[$i]->getClientOriginalName().",";
+            }
+            else {
+                $houseImages .= $uploadedFiles[$i]->getClientOriginalName();
+            }
+        }
+
         $form = $request->validate([
             'room_name' => 'required',
             'room_details' => 'required',
             'room_location' => 'required',
             'room_price' => 'required',
-            'room_image' => 'required'
+            'room_image' => 'required|array|min:5'
         ]);
+
+        $form['room_image'] = $houseImages;
 
         $guesthouse->update($form);
 
@@ -66,15 +81,16 @@ class GuestHouseController extends Controller
 
     //store guest hoseu data 
     public function store(Request $request) {
-        $houseImages = [];
-
-        for ($i=0; $i < 10; $i++) { 
-            $imageUrl = Image::imageUrl(265,265,'house', true);
-            $houseImages[] = $imageUrl;
+        $houseImages = '';
+        $uploadedFiles = $request->file('room_image');
+        for($i = 0; $i < count($uploadedFiles); $i++) {
+            if($i != count($uploadedFiles)-1) {
+                $houseImages .= $uploadedFiles[$i]->getClientOriginalName().",";
+            }
+            else {
+                $houseImages .= $uploadedFiles[$i]->getClientOriginalName();
+            }
         }
-
-        $request['room_image'] = json_encode($houseImages);
-
         $form = $request->validate([
             'room_name' => 'required',
             'room_details' => 'required',
@@ -82,6 +98,8 @@ class GuestHouseController extends Controller
             'room_price' => 'required',
             'room_image' => 'required'
         ]);
+
+        $form['room_image'] = $houseImages;
 
         GuestHouses::create($form);
 

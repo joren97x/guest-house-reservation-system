@@ -7,7 +7,16 @@
 
 
 <div class="container-fluid">
-    <header class="fs-1 text-center">MY RESERVATIONS</header>
+    @if(auth()->user()->role == "admin")
+        <header class="fs-1 text-center">All reservations</header>
+        @if(count($reservations) === 0)
+            <tr>
+                <td colspan="10" class="text-center"> <h3>No reservations found</h3> </td>
+            </tr>
+            @endif
+    @else
+        <header class="fs-1 text-center">My reservations</header>
+    @endif
 
     <table class="table table-striped table-hover table-bordered mt-4">
         <thead class="table-primary">
@@ -33,28 +42,27 @@
             </tr>
             @endif
 
-           
+            
             @foreach($reservations as $reservation)
 
             @php
-
-            $created_time = $reservation->created_at;
-            $expire_time = $created_time->copy()->addHours(24);
-            $is_expired = $created_time->greaterThan($expire_time);
-
-            $status = '';
-            switch($reservation->status){
-                case 'approved':
-                    $status .= '<span class="rounded" style="background-color: hsl(145, 63%, 40%);">'.  $reservation->status   .'</span>';
-                    break;
-                case 'pending':
-                    $status .= '<span class="rounded bg-warning">'.  $reservation->status   .'</span>';
-                    break;
-                case 'cancelled':
-                    $status .= '<span class="rounded bg-danger">'.  $reservation->status  .'</span>';
-                    break;
-            }
-
+                $created_time = strtotime($reservation->created_at);
+                $expire_time = $created_time + (24 * 60 * 60); // Add 24 hours in seconds
+                $current_time = time();
+                $is_expired = $current_time > $expire_time;
+                // echo "CREATED TIME :". $created_time . " EXPIRY TIME :" . $expire_time . " CREATED TIME IS LESS THAN EXPIRE TIME? " . $is_expired. "<br>";
+                $status = '';
+                switch($reservation->status){
+                    case 'approved':
+                        $status .= '<span class="rounded" style="background-color: hsl(145, 63%, 40%);">'.  $reservation->status   .'</span>';
+                        break;
+                    case 'pending':
+                        $status .= '<span class="rounded bg-warning">'.  $reservation->status   .'</span>';
+                        break;
+                    case 'cancelled':
+                        $status .= '<span class="rounded bg-danger">'.  $reservation->status  .'</span>';
+                        break;
+                }
             @endphp
 
             <tr id="reservation{{ $reservation->id }}">
@@ -66,10 +74,10 @@
                 <td> {{ $reservation->payment_process }} </td>
                 <td> {{ $reservation->guest_house->room_location }} </td>
                 <td> {{ $reservation->created_at->format('d/m/Y') }} </td>
-                <td> <span class="rounded bg-danger"> {!! $status !!}  </span> </td>
+                <td> <span class="rounded bg-danger" id="status{{ $reservation->id }}"> {!! $status !!}  </span> </td>
                 <td>
-                    <button class="btn btn-warning btn-sm" {{ $is_expired ? "disabled" : "" }} data-bs-toggle="modal" data-bs-target="#cancel_reservation_modal{{ $reservation->id }}"><i class="bi bi-x-circle-fill h5 text-dark"></i></button>
-                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete_reservation_modal{{ $reservation->id }}"><i class="bi bi-trash-fill h5 text-dark"></i></button>
+                    <button class="btn btn-warning btn-sm" {{ $is_expired ? "disabled" : "" }} data-bs-toggle="modal" data-bs-target="#cancel_reservation_modal{{ $reservation->id }}"><i class="bi bi-x-circle-fill h6 text-dark"></i></button>
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete_reservation_modal{{ $reservation->id }}"><i class="bi bi-trash-fill h6 text-dark"></i></button>
                 </td>
               </tr>
 
@@ -112,7 +120,7 @@
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       <form action="reservation/delete" method="POST">
-                        @method('DELETE')
+                        @method('PATCH')
                         @csrf
                             <button class="btn btn-warning" id="btn-cancel" onclick="cancelReservation({{ $reservation->id }})" data-bs-dismiss="modal"> Cancel </button>
                     </form>
@@ -141,12 +149,13 @@
                 type: 'POST',
                 url: 'reservation/cancel',
                 data: {
-                    _method: 'UPDATE',
+                    _method: 'PUT',
                     _token: ' {{ csrf_token() }} ',
                     id: id
                 },
                 success: function(data) {
                     console.log(data)
+                    $('#status'+id).html('<span class="rounded bg-danger">cancelled</span>')
                 },
                 error: function(error) {
                     console.log(error)

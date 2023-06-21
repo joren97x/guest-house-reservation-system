@@ -32,7 +32,7 @@ class WishlistController extends Controller
         $wishlist = Wishlist::find($request->id);
         $wishlist->delete();
 
-        return response()->json(['response' => "DELETED NA PRE"]);
+        return response()->json(['response' => "DELETED NA PRE", 'id' => $request->all()]);
     }
 
 }

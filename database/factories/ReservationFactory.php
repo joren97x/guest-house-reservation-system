@@ -24,8 +24,8 @@ class ReservationFactory extends Factory
             'room_id' => $this->faker->numberBetween(0,15),
             'user_id' => $this->faker->numberBetween(1,5),
             'name' => $user->name,
-            'address' => $this->faker->address(),
-            'contact_no' => $this->faker->phoneNumber(),
+            'address' => $user->address,
+            'contact_no' => $user->contact_no,
             'payment_process' => 'paypal',
             'status' => $this->faker->randomElement(["approved", "cancelled", "pending"])
 

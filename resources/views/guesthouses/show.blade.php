@@ -132,11 +132,7 @@
     
         <div class="col-2 d-flex align-items-center justify-content-end">
             <button class="btn mr-2"><a href="/rooms/{{$guesthouse->id}}/edit">Edit</a></button>
-            <form method="POST" action="/rooms/{{$guesthouse->id}}">
-                @csrf
-                @method('DELETE')
-                <button class="btn text-danger">Delete</button>
-            </form>
+                <button class="btn text-danger" data-bs-toggle="modal" data-bs-target="#delete_guest_house_modal" >Delete</button>
         </div>
     @else 
 
@@ -225,6 +221,25 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="delete_guest_house_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Guest House</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+       
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <form method="POST" action="/rooms/{{$guesthouse->id}}">
+            @csrf
+            @method('DELETE')
+            <button type="button submit" class="btn btn-danger">Delete</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
 <div class="offcanvas offcanvas-container" tabindex="-1" id="imageOffcanvas" aria-labelledby="imageOffcanvasLabel">
     <div class="offcanvas-content">
         <div class="offcanvas-header">

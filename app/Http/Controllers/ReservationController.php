@@ -23,4 +23,13 @@ class ReservationController extends Controller
 
     }
 
+    public function cancel(Request $request) {
+
+        $reservation = Reservation::find($request->id);
+        $reservation->status = 'cancelled';
+        $reservation->save();
+        return response()->json(['response' => "ABOT DIRE!", 'request' => $request->all()]);
+
+    }
+
 }

@@ -1,11 +1,11 @@
 @extends('master')
-
+@section('title', 'Create Guest House')
 
 @section('content')
 @include('partials._navbar')
     
 <div class="container text-center bg-white">
-   <form method="POST" action="/guesthouses">
+   <form method="POST" action="/guesthouses/create" enctype="multipart/form-data">
     @csrf
     <div class="row justify-content-around">
       <h1 class="mt-2">CREATE NEW GUEST HOUSE</h1>
@@ -18,6 +18,15 @@
           <p class="text-danger mt-1"> {{ $message }} </p>
       @enderror
     </div>
+
+    <div class="form-group">
+      <label for="room_image" class="mb-2">Room Images (minimum 5 images)</label>
+      <input type="file" multiple class="form-control rounded-pill"  id="room_image" name="room_image[]" value="{{ old('room_image') }}" >
+      @error('room_image')
+          <p class="text-danger mt-1"> {{ $message }} </p>
+      @enderror
+    </div>
+    
     <div class="form-group">
         <label for="roomDetails" class="mb-2">Room Description</label>
         <textarea class="form-control rounded" id="roomDetails" name="room_details" rows="3" > {{ old('room_details') }} </textarea>
@@ -26,8 +35,6 @@
         @enderror
       </div>
 
-      <input type="hidden" name="room_image" >
-      
       <div class="form-group">
         <div class="row">
           <div class="col-6">

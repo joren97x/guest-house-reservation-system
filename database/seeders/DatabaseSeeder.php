@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\GuestHouses;
 use App\Models\Reservation;
 use App\Models\User;
+use App\Models\Wishlist;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,8 +17,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
         GuestHouses::factory(15)->create();
         Reservation::factory(10)->create();
+        Wishlist::factory(10)->create();
+
+
         // GuestHouses::create([
         //     'room_name' => 'Pine tree haven',
         //     'room_details' => 'loerm imsds kosk dosk odsko ksokdosk',

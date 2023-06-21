@@ -1,11 +1,17 @@
 @extends('master')
-
-
+@section('title', 'Edit guest house')
 @section('content')
 @include('partials._navbar')
+
+<style>
+  .bi-x-circle-fill:hover {
+    color:red;
+    cursor: pointer;
+  }
+</style>
     
-<div class="container text-center bg-white" style="margin-top: 120px">
-   <form method="POST" action="/rooms/{{$guesthouse->id}}">
+<div class="container text-center bg-white">
+   <form method="POST" action="/rooms/update/{{$guesthouse->id}}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="row justify-content-around">
@@ -20,6 +26,30 @@
           <p class="text-danger mt-1"> {{ $message }} </p>
       @enderror
     </div>
+
+    @php
+
+    $room_images = explode(',', $guesthouse->room_image);
+
+    @endphp
+
+    <div class="form-group">
+      <label for="room_image" class="mb-2">Room Images (minimum 5 images)</label>
+      <input type="file" multiple class="form-control rounded-pill"  id="room_image" name="room_image[]">
+      @error('room_image')
+          <p class="text-danger mt-1"> {{ $message }} </p>
+      @enderror
+      <div class="row mt-2">
+        @foreach ($room_images as $image)
+          <div class="col position-relative" id="image_container{{ $image }}">
+            <img src="{{ asset('images/'.$image) }}" alt="" class="w-100 h-75 rounded">
+            <p>{{ $image }}</p>
+            {{-- <i class="bi bi-x-circle-fill position-absolute top-0 end-0" onclick="remove_image({{ $image }})"></i> --}}
+          </div>
+        @endforeach
+      </div>
+    </div>
+
     <div class="form-group">
         <label for="roomDetails" class="mb-2">Room Description</label>
         <textarea class="form-control rounded" id="roomDetails" name="room_details" rows="3" > {{$guesthouse->room_details}} </textarea>

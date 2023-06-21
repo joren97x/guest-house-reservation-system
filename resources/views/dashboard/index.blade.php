@@ -1,4 +1,8 @@
 @extends('master')
+
+@section('title', 'Dashboard')
+@section('content')
+@include('partials._navbar')
 <style>
     body {
        font-family: 'Questrial', sans-serif;
@@ -98,28 +102,60 @@
        background-color: #d9534f !important;
    }
 </style>
-@section('title', 'Dashboard')
-@section('content')
-@include('partials._navbar')
-
 <div class="container " >
     <h1>Dashboard</h1>
 
     <div class="container">
         <div class="row">
 
+            @if(auth()->user()->role == "admin")
+
             <div class="col-lg-3 col-sm-6">
-                <div class="card-box bg-blue">
-                    <div class="inner">
-                        <h3> 9999 </h3>
-                        <p> Guest Houses </p>
+                <a href="/">
+                    <div class="card-box bg-blue ">
+                        <div class="inner text-light">
+                            <h3> {{ $guesthouse_count }} </h3>
+                            <p> Guest Houses </p>
+                        </div>
+                        <div class="icon">
+                            <i class="bi bi-houses-fill" aria-hidden="true"></i>
+                        </div>
+                        <a href="#" class="card-box-footer">more info <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
-                    <div class="icon">
-                        <i class="bi bi-houses-fill" aria-hidden="true"></i>
-                    </div>
-                    <a href="#" class="card-box-footer">more info <i class="fa fa-arrow-circle-right"></i></a>
-                </div>
+                </a>
             </div>
+
+            <div class="col-lg-3 col-sm-6">
+                <a href="/users/index">
+                    <div class="card-box bg-orange">
+                        <div class="inner text-light">
+                            <h3> {{ $user_count }} </h3>
+                            <p> Users </p>
+                        </div>
+                        <div class="icon">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <a href="#" class="card-box-footer">more info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-sm-6">
+                <a href="/dashboard/reservations">
+                    <div class="card-box bg-primary" style="--bs-bg-opacity: .5;">
+                        <div class="inner text-light">
+                            <h3> {{ $reservation_count }} </h3>
+                            <p> All Reservations </p>
+                        </div>
+                        <div class="icon">
+                            <i class="bi bi-bookmarks-fill"></i>
+                        </div>
+                        <a href="#" class="card-box-footer">more info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </a>
+            </div>
+
+            @endif
 
             <!-- <div class="col-lg-3 col-sm-6">
                 <div class="card-box bg-green">
@@ -133,18 +169,7 @@
                     <a href="#" class="card-box-footer">more info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div> -->
-            <!-- <div class="col-lg-3 col-sm-6">
-                <div class="card-box bg-orange">
-                    <div class="inner">
-                        <h3> 5464 </h3>
-                        <p> Users </p>
-                    </div>
-                    <div class="icon">
-                        <i class="bi bi-people-fill"></i>
-                    </div>
-                    <a href="#" class="card-box-footer">more info <i class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div> -->
+            
             <!-- <div class="col-lg-3 col-sm-6">
                 <div class="card-box bg-red">
                     <div class="inner">
@@ -157,18 +182,7 @@
                     <a href="#" class="card-box-footer">more info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
         </div> -->
-        <div class="col-lg-3 col-sm-6">
-            <div class="card-box bg-primary" style="--bs-bg-opacity: .5;">
-                <div class="inner">
-                    <h3> 9999 </h3>
-                    <p> All Reservations </p>
-                </div>
-                <div class="icon">
-                    <i class="bi bi-bookmarks-fill"></i>
-                </div>
-                <a href="#" class="card-box-footer">more info <i class="fa fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
+        
         <!-- <div class="col-lg-3 col-sm-6">
             <div class="card-box bg-secondary">
                 <div class="inner">

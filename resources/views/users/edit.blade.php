@@ -50,7 +50,10 @@
                     @method('PUT')
                     <input type="email" class="form-control" value="{{ auth()->user()->email }}" name="email" placeholder="Email Address" required>
                 </form>
-                <span id="span_email"> {{ auth()->user()->email }} </span>
+                <span id="span_email"> {{ auth()->user()->email }} </span> 
+                @error('email')
+                    <label class="text-danger"> {{ $message }} </label>
+                @enderror 
             </div>
         </div>
         <div class="col-2 mt-3 button">

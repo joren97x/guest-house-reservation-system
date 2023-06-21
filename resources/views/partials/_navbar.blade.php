@@ -30,7 +30,6 @@
 
     .offcanvas .offcanvas-body .rounded:hover {
         background-color: rgba(0, 0, 0, 0.1);
-        color: blue;
     }
 
     .dropdown-menu .dropdown-item:hover {
@@ -101,13 +100,13 @@
 
             <div class="col-lg-2  col-md-3 d-flex justify-content-end notif-icon" style="margin-right: 40px">
                 <div class="dropstart rounded">
-                    <button role="button" data-bs-toggle="dropdown" aria-expanded="false" id="btn-bell"
+                    {{-- <button role="button" data-bs-toggle="dropdown" aria-expanded="false" id="btn-bell"
                         style="float: left; border: none; font-size:25px; background-color: white">
                         <i class="bi bi-bell " style="float: left; color: black"></i>
                         <input type="hidden" id="user_type">
                         <input type="hidden" id="user_id">
                         <span class="badge bg-danger" id="num_reservation"></span>
-                    </button>
+                    </button> --}}
                     <ul class="dropdown-menu shadow" id="notification-dropdown" style="max-height: 600px;">
                         <li class="h5 w-100" style="padding-right: 280px; margin-left: 20px">Notifications</li>
                         <hr>
@@ -163,8 +162,10 @@
         <div class="offcanvas-body h6">
             <a href="/" style="text-decoration: none;">
                 <div class="row mx-1 rounded">
-                    <div class="col-1 mb-1 h4"><i class="bi bi-house"></i></div>
-                    <div class="col-10 ms-2 h6 mt-1">Home</div>
+                    <div class="row my-1"> 
+                        <div class="col-1"><i class="bi bi-house fs-4"></i></div>
+                        <div class="col-10 mt-1 ms-2">Home</div>
+                    </div>
                 </div>
             </a>
 
@@ -172,27 +173,38 @@
 
             <a href="/dashboard" style="text-decoration: none;">
                 <div class="row mx-1 rounded">
-                    <div class="col-1 mb-1 h4"><i class="bi bi-speedometer2"></i></div>
-                    <div class="col-10 ms-2 h6 mt-1">Dashboard</div>
+                    <div class="row my-1">
+                        <div class="col-1 "><i class="bi bi-speedometer2 fs-4"></i></div>
+                        <div class="col-10 mt-1 ms-2">Dashboard</div>
+                    </div>
                 </div>
             </a>
-            <a href="houseManagement" style="text-decoration: none;">
+            
+            @if( auth()->user()->role == "admin" ) 
+
+            {{-- <a href="houseManagement" style="text-decoration: none;">
                 <div class="row mx-1 rounded">
-                    <div class="col-1 mb-1 h4"><i class="bi bi-house-gear"></i></div>
-                    <div class="col-10 ms-2 h6 mt-1">Manage Houses</div>
+                    <div class="col-1 "><i class="bi bi-house-gear fs-4"></i></div>
+                    <div class="col-10 mt-1 ms-2">Manage Houses</div>
                 </div>
-            </a>
+            </a> --}}
             <a href="/guesthouses/create" style="text-decoration: none;">
                 <div class="row mx-1 rounded">
-                    <div class="col-1 mb-1 h4"><i class="bi bi-house-add"></i></div>
-                    <div class="col-10 ms-2 h6 mt-1">Create House</div>
+                    <div class="row my-1">
+                        <div class="col-1 "><i class="bi bi-house-add fs-4"></i></div>
+                        <div class="col-10 mt-1 ms-2">Create House</div>
+                    </div>
                 </div>
             </a>
 
+            @endif
+
             <a href="/dashboard/reservations" style="text-decoration: none;">
                 <div class="row mx-1 rounded">
-                    <div class="col-1 h4 mb-1"><i class='bi bi-book'></i></div>
-                    <div class="col-10 ms-2 h6 mt-1">View Reservations</div>
+                    <div class="row my-1">
+                        <div class="col-1"><i class='bi bi-book fs-4'></i></div>
+                        <div class="col-10 mt-1 ms-2">View Reservations</div>
+                    </div>
                 </div>
             </a>
 
@@ -200,8 +212,11 @@
 
             <a href="/about" style="text-decoration: none;">
                 <div class="row mx-1 rounded">
-                    <div class="col-1 h4 mb-1"><i class="bi bi-info-circle"></i></div>
-                    <div class="col-10 ms-2 h6 mt-1">About Us</div>
+                    <div class="row my-1">
+                        <div class="col-1 h4 mb-1">
+                        <i class="bi bi-info-circle fs-4"></i></div>
+                        <div class="col-10 mt-1 ms-2">About Us</div>
+                    </div>
                 </div>
             </a>
 

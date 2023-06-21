@@ -41,7 +41,15 @@ class UserController extends Controller
     }
 
     public function show() {
-        return view('users.show');
+
+
+        return view('users.edit');
+    }
+
+    public function index() {
+        $users = User::get();
+
+        return view('users.index', ['users' => $users]);
     }
 
     public function authenticate(Request $request) {
@@ -69,6 +77,11 @@ class UserController extends Controller
 
     public function update_email(Request $request) {
         $user = User::find(auth()->user()->id);
+
+        $request->validate([
+            'email' => ['required', 'email', Rule::unique('users', 'email')]
+        ]);
+
         $user->email = $request->email;
         $user->save();
         return back()->with('message', 'Successfully changed email!');
