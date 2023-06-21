@@ -117,7 +117,7 @@
                         <div class="dropdown">
                             <button type="button" data-bs-toggle="dropdown" aria-expanded="false"
                                 style="border: none; font-size:25px; background-color: white">
-                                <i class="bi bi-person-circle "></i>
+                                <img src="{{ asset('images/'.auth()->user()->profile_pic ) }}" class="profile_avatar" alt="">
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                 <li>  <a href="/account"> <button class="dropdown-item ">Account</button> </a> </li>

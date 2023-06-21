@@ -35,7 +35,10 @@ class UserController extends Controller
         //hash password
         $form['role'] = 'user';
         $form['password'] = bcrypt($form['password']);
+        
         $user = User::create($form);
+        $user->profile_pic = "default_profile.png";
+        $user->save();
         auth()->login($user);
         return redirect('/')->with('message', 'Created and logged in successfully');
     }
@@ -50,6 +53,12 @@ class UserController extends Controller
         $users = User::get();
 
         return view('users.index', ['users' => $users]);
+    }
+
+    public function delete(Request $request) {
+        $user = User::find($request->id);
+        $user->delete();
+        return response()->json(['response' => 'HELLO GIATAY!', 'id' => $request->all()]);
     }
 
     public function authenticate(Request $request) {
@@ -85,6 +94,14 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->save();
         return back()->with('message', 'Successfully changed email!');
+    }
+
+    public function add_profile_pic(Request $request) {
+
+        $user = User::find(auth()->user()->id);
+        $user->profile_pic = $request->profile_pic;
+        $user->save();
+        return back()->with('message', 'Succesfully changed profile pic!');
     }
 
     public function add_phone(Request $request) {

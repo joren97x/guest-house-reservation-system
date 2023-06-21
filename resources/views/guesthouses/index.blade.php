@@ -10,6 +10,14 @@
       text-overflow: ellipsis;
     }
 
+    .icon {
+      font-size: 20px;
+    }
+
+    .card-body span {
+      font-size: 12px
+    }
+
     .truncate-text-title {
       display: -webkit-box;
       -webkit-line-clamp: 1; /* Adjust the number of lines to show */
@@ -57,6 +65,8 @@
 
 </style>
 @include('partials._navbar')
+
+
 
 <div class="container-fluid mt-5">
 <div class="row" id="roomDiv" name="roomDiv">

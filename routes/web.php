@@ -10,6 +10,7 @@ use App\Http\Controllers\GuestHouseController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\WishlistController;
 use App\Models\Reservation;
+use App\Models\User;
 use App\Models\Wishlist;
 
 /*
@@ -59,6 +60,8 @@ Route::put('/account/update/phone', [UserController::class, 'add_phone'])->middl
 Route::post('/account/add/address', [UserController::class, 'add_address'])->middleware('auth');
 Route::put('/account/update/address', [UserController::class, 'add_address'])->middleware('auth');
 Route::get('/users/index', [UserController::class, 'index'])->middleware('auth');
+Route::delete('/users/delete', [UserController::class, 'delete'])->middleware('auth');
+Route::put('/account/update/profile_pic', [UserController::class, 'add_profile_pic'])->middleware('auth');
 
 Route::post('/payment/{guesthouse}', [GuestHouseController::class, 'payment'])->middleware('auth');
 Route::delete('/rooms/{guesthouse}', [GuestHouseController::class, 'destroy']);

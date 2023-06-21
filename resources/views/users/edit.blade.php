@@ -18,7 +18,26 @@
 @include('partials._navbar')
 
 <div class="container border border-bottom-0">
-    <h4 class="text-center mt-3 fw-bold fs-3">Account Information</h4>
+    <h4 class="text-center mt-3 fw-bold fs-3">Account Information {{ auth()->user()->profile_pic }} </h4>
+    <hr>
+    <div class="row justify-content-around ">
+        <div class="col-5">
+            <div class="row fw-bold h6">
+                Profile Picture
+            </div>
+            <div class="row ms-2 title" >
+                <form action="/account/update/profile_pic" method="POST" id="form_profile_pic" hidden>
+                    @csrf
+                    @method('PUT')
+                    <input type="file" class="form-control" name="profile_pic" id="profile_pic" required>
+                </form>
+                <span id="span_profile_pic"> <img src="{{ asset('images/'.auth()->user()->profile_pic ) }}" class="rounded" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile pic"> </span>
+            </div>
+        </div>
+        <div class="col-2 mt-3 button">
+            <span onclick="show_input_profile_pic()"> Edit </span>
+        </div>
+    </div>
     <hr>
     <div class="row justify-content-around ">
         <div class="col-5">
@@ -123,6 +142,11 @@
         $('#form_full_name').removeAttr('hidden')
     }
 
+    function show_input_profile_pic() {
+        $('#span_profile_pic').hide()
+        $('#form_profile_pic').removeAttr('hidden')
+    }
+
     function show_input_email() {
         $('#span_email').hide()
         $('#form_email').removeAttr('hidden')
@@ -137,6 +161,15 @@
         $('#span_address').hide()
         $('#form_address').removeAttr('hidden')
     }
+
+    $('#profile_pic').on('change', function(event) {
+        var fileInput = event.target;
+        if(fileInput.files && fileInput.files[0]) {
+            $('#form_profile_pic').submit();
+        }
+    })
+
+    
 
 </script>
 
