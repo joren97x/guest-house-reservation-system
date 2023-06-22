@@ -58,7 +58,6 @@
         @enderror
       </div>
 
-      <input type="hidden" name="room_image" >
       
       <div class="form-group">
         <div class="row">
@@ -82,7 +81,7 @@
       <input type="hidden" value="{{$guesthouse->room_image}}" name="room_image">
 
       <div class="form-group text-center mt-4">
-        <button type="submit" class="btn btn-success rounded-pill px-5 py-3 mb-5">Create Room</button>
+        <button type="submit" class="btn btn-success rounded-pill px-5 py-3 mb-5">Update</button>
       </div>
         </div>
       </div>

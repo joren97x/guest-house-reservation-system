@@ -9,11 +9,6 @@
 <div class="container-fluid">
     @if(auth()->user()->role == "admin")
         <header class="fs-1 text-center">All reservations</header>
-        @if(count($reservations) === 0)
-            <tr>
-                <td colspan="10" class="text-center"> <h3>No reservations found</h3> </td>
-            </tr>
-            @endif
     @else
         <header class="fs-1 text-center">My reservations</header>
     @endif
@@ -29,7 +24,18 @@
                 <th scope="col">Payment Process</th>
                 <th scope="col">Guest House Address</th>
                 <th scope="col">Date</th>
-                <th scope="col">Status</th>
+                <th scope="col">
+                    <div class="dropdown">
+                        <button class="btn btn-sm dropdown-toggle fw-bold" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Status</button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="/reservation/sort/all" id="dropdown_all">All</a></li>
+                          <li><a class="dropdown-item" href="/reservation/sort/cancelled" id="dropdown_cancel">Cancelled</a></li>
+                          <li><a class="dropdown-item" href="/reservation/sort/approved" id="dropdown_approved">Approved</a></li>
+                          <li><a class="dropdown-item" href="/reservation/sort/pending" id="dropdown_pending">Pending</a></li>
+                        </ul>
+                      </div>
+                </th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -40,8 +46,8 @@
             <tr>
                 <td colspan="10" class="text-center"> <h3>No reservations found</h3> </td>
             </tr>
-            @endif
-
+            
+            @else
             
             @foreach($reservations as $reservation)
 
@@ -130,7 +136,7 @@
               </div>
 
             @endforeach
-
+            @endif
         </tbody>
     </table>
 </div>
@@ -147,7 +153,7 @@
             event.preventDefault();
             $.ajax({
                 type: 'POST',
-                url: 'reservation/cancel',
+                url: '/reservation/cancel',
                 data: {
                     _method: 'PUT',
                     _token: ' {{ csrf_token() }} ',
@@ -167,7 +173,7 @@
             event.preventDefault();
             $.ajax({
                 type: 'POST',
-                url: 'reservation/delete',
+                url: '/reservation/delete',
                 data: {
                     _method: 'DELETE',
                     _token: '{{ csrf_token() }}',
@@ -183,6 +189,27 @@
                 }
             })
         }
+
+        $('#dropdown_cancel').on('click', function() {
+            $.ajax({
+                url: '/reservation/sort/cancelled',
+                type: 'GET',
+                
+                success: function(response) {
+                    console.log(response)
+                    for (var key in response) {
+        if (response.hasOwnProperty(key)) {
+            var value = response[key];
+            console.log(key + ': ' + value);
+        }
+    }
+                },
+                error: function(error) {
+                    console.log(error)
+                }
+            })
+        })
+
 </script>
 
 @endsection

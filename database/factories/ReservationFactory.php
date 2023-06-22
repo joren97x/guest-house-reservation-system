@@ -21,7 +21,7 @@ class ReservationFactory extends Factory
         $user = User::factory()->create();
 
         return [
-            'room_id' => $this->faker->numberBetween(0,15),
+            'room_id' => $this->faker->numberBetween(1,15),
             'user_id' => $this->faker->numberBetween(1,5),
             'name' => $user->name,
             'address' => $user->address,

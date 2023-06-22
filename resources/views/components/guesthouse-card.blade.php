@@ -12,15 +12,20 @@
 
         </div>
         <div class="card-body">
-          <div class="room-name">
-            <h5 class="truncate-text-title"> {{$guesthouse->room_name}} </h5>
+          <div class="room-name row ">
+            <div class="col-9">
+              <h5 class="truncate-text-title"> {{$guesthouse->room_name}} </h5>
+            </div>
+            <div class="col-3">
+              <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> 3.3
+            </div>
           </div>
             <div class="room-desc"> 
                 <p class="truncate-text"> {{ $guesthouse->room_details }} </p> 
              </div>
           <div>
             <p>
-              <label class="fw-bold"> {{ $guesthouse->room_price }} </label> monthly
+              <label class="fw-bold">₱ {{ $guesthouse->room_price }} </label> monthly
             </p>
           </div>
         </div>

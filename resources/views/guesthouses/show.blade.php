@@ -122,36 +122,45 @@
 </style>
 @include('partials._navbar')
 
-<div class="container mt-5" style="margin-bottom: 100px;">
-  <div class="row mb-3">
-    <div class="col-10">
-      <h1 id="house_title">{{$guesthouse->room_name}}  </h1>  
+<div class="container" style="margin-bottom: 100px;">
+    <div class="row">
+        <div class="col-12">
+        <h1 id="house_title">{{$guesthouse->room_name}}  </h1>  
+        </div>
+        
+        @php 
+            $room_image = explode(',', $guesthouse->room_image);
+        @endphp
     </div>
-    @auth
-    @if ( auth()->user()->role == "admin" )
-    
-        <div class="col-2 d-flex align-items-center justify-content-end">
-            <button class="btn mr-2"><a href="/rooms/{{$guesthouse->id}}/edit">Edit</a></button>
+    <div class="row mb-2">
+        <div class="col-2 text-center">
+            <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> 3.3 - <span style="text-decoration: underline;">(69 reviews)</span>
+        </div>
+        <div class="col-8 text-start">
+            <i class="fa-solid fa-location-dot" style="color: red;"></i> Located in - <span style="text-decoration: underline;"> {{ $guesthouse->room_location }} </span> 
+        </div>
+        @auth
+        @if ( auth()->user()->role == "admin" )
+        
+            <div class="col-2 d-flex align-items-center justify-content-end">
+                <button class="btn mr-2"><a href="/rooms/{{$guesthouse->id}}/edit">Edit</a></button>
                 <button class="btn text-danger" data-bs-toggle="modal" data-bs-target="#delete_guest_house_modal" >Delete</button>
-        </div>
-    @else 
-
-        @if($wishlist)
-        <div class="col-2 mt-4 text-end">
-            <span class="mt-3" id="unsave_icon"> <i class="bi bi-heart-fill text-danger "></i> saved </span>
-        </div>
+            </div>
         @else 
-        <div class="col-2 mt-4 text-end">
-            <span class="mt-3" id="save_icon"> <i class="bi bi-heart "></i> save </span>
-        </div>
-        @endif
 
-    @endif
-    @endauth
-    @php 
-        $room_image = explode(',', $guesthouse->room_image);
-    @endphp
-</div>
+            @if($wishlist)
+            <div class="col-2 mt-4 text-end">
+                <span class="mt-3" id="unsave_icon"> <i class="bi bi-heart-fill text-danger "></i> saved </span>
+            </div>
+            @else 
+            <div class="col-2 mt-4 text-end">
+                <span class="mt-3" id="save_icon"> <i class="bi bi-heart "></i> save </span>
+            </div>
+            @endif
+
+        @endif
+        @endauth
+    </div>
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12">
             <img src="{{ asset('images/'.$room_image[0]) }}" id="img0" onclick="openFullscreen(this)"
@@ -204,6 +213,38 @@
                     <div class="h5 mx-5 text-dark" id="house_location"> Located in {{ $guesthouse->room_location }} </div>
                 </li>
             </ul>
+            <hr>
+            <div class="h4 text-dark">Reviews</div>
+            <div class="row h5">
+                <div class="col">
+                    <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> 3.3 - <span style="text-decoration: underline;">(69 reviews)</span>
+                </div>
+            </div>
+
+            <div class="row review-section">
+
+                @for($i = 0; $i < 5; $i++)
+
+                <div class="col-5 m-2 border">
+                    <div class="row mt-2">
+                        <div class="col-1">
+                            <img src="{{ asset('images/profile/'.auth()->user()->profile_pic ) }}" class="profile_avatar" alt="">
+                        </div>
+                        <div class="col-10 ms-3 mt-2 fw-bold">
+                            John Doe 
+                        </div>
+                    </div>
+                    <div class="row m-1">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+
+                @endfor
+
+            </div>
+
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12 mt-3">
             <div class="card">
@@ -212,7 +253,7 @@
                 <div class="card-body">
                     <h3 class="card-title">Price details</h3>
                     <p class="card-text">Monthly Fee <label for="" style="margin-left: 135px;"
-                            id="house_price">{{ $guesthouse->room_price }}</label></p>
+                            id="house_price">₱{{ $guesthouse->room_price }}</label></p>
                             <button type="submit" class="btn btn-success form-control" id="reserveBtn">Reserve Now</button>
                 </div>
                 </form>

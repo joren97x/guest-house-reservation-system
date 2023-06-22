@@ -35,8 +35,10 @@ use App\Models\Wishlist;
 
 
 Route::post('/payment/confirm', [ReservationController::class, 'store'])->middleware('auth');
-Route::delete('/dashboard/reservation/delete', [ReservationController::class, 'delete'])->middleware('auth');
-Route::put('dashboard/reservation/cancel', [ReservationController::class, 'cancel'])->middleware('auth');
+Route::delete('/reservation/delete', [ReservationController::class, 'delete'])->middleware('auth');
+Route::put('/reservation/cancel', [ReservationController::class, 'cancel'])->middleware('auth');
+Route::get('/reservation/sort/{sort}', [ReservationController::class, 'sort'])->middleware('auth');
+
 
 Route::get('/dashboard', [HomeController::class, 'index'])->middleware('auth');
 Route::get('/dashboard/reservations', [HomeController::class, 'show'])->middleware('auth');

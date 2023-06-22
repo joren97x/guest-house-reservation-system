@@ -19,4 +19,8 @@ class Reservation extends Model
         'status',
     ];
 
+    public function guest_house() {
+        return $this->belongsTo(GuestHouses::class, 'room_id');
+    }
+
 }

@@ -38,11 +38,16 @@
                         <img src="{{ asset('images/room1.png') }}" id="room_image" class="rounded img-fluid mx-auto d-block m-2" style="max-width: 150px; max-height: 150px;">
                         <label><h4>  {{ $guesthouse->room_name }}  </h4></label>
                         <p><h6>  {{ $guesthouse->room_details }}  </h6></p>
+                        <div class="row">
+                          <div class="col text-center">
+                            <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> 3.3 - <span style="text-decoration: underline;">(69 reviews)</span>
+                        </div>
+                        </div>
                     </div>
                     <div class="col-lg-12 mt-3 text-center"><br>
                     <hr>
                         <h5>Price Details</h5>
-                        <div class="row text-end"><h6 class="">  {{ $guesthouse->room_price }} monthly  </h6></div>
+                        <div class="row text-end"><h6 class="">  ₱{{ $guesthouse->room_price }} monthly  </h6></div>
                     </div>
                 </div>
 

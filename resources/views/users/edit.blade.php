@@ -18,7 +18,7 @@
 @include('partials._navbar')
 
 <div class="container border border-bottom-0">
-    <h4 class="text-center mt-3 fw-bold fs-3">Account Information {{ auth()->user()->profile_pic }} </h4>
+    <h4 class="text-center mt-3 fw-bold fs-3">Account Information </h4>
     <hr>
     <div class="row justify-content-around ">
         <div class="col-5">
@@ -31,7 +31,7 @@
                     @method('PUT')
                     <input type="file" class="form-control" name="profile_pic" id="profile_pic" required>
                 </form>
-                <span id="span_profile_pic"> <img src="{{ asset('images/'.auth()->user()->profile_pic ) }}" class="rounded" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile pic"> </span>
+                <span id="span_profile_pic"> <img src="{{ asset('images/profile/'.auth()->user()->profile_pic ) }}" class="rounded" style="width: 100px; height: 100px; object-fit: cover;" alt="Profile pic"> </span>
             </div>
         </div>
         <div class="col-2 mt-3 button">

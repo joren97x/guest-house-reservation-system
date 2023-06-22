@@ -117,7 +117,7 @@
                         <div class="dropdown">
                             <button type="button" data-bs-toggle="dropdown" aria-expanded="false"
                                 style="border: none; font-size:25px; background-color: white">
-                                <img src="{{ asset('images/'.auth()->user()->profile_pic ) }}" class="profile_avatar" alt="">
+                                <img src="{{ asset('images/profile/'.auth()->user()->profile_pic ) }}" class="profile_avatar" alt="">
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                 <li>  <a href="/account"> <button class="dropdown-item ">Account</button> </a> </li>
@@ -192,7 +192,7 @@
                 <div class="row mx-1 rounded">
                     <div class="row my-1">
                         <div class="col-1 "><i class="bi bi-house-add fs-4"></i></div>
-                        <div class="col-10 mt-1 ms-2">Create House</div>
+                        <div class="col-10 mt-1 ms-2">Create Guest House</div>
                     </div>
                 </div>
             </a>

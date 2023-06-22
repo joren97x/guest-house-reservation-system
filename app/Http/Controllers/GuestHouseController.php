@@ -49,21 +49,27 @@ class GuestHouseController extends Controller
     public function update(Request $request, GuestHouses $guesthouse) {
         $houseImages = '';
         $uploadedFiles = $request->file('room_image');
-        for($i = 0; $i < count($uploadedFiles); $i++) {
-            if($i != count($uploadedFiles)-1) {
-                $houseImages .= $uploadedFiles[$i]->getClientOriginalName().",";
-            }
-            else {
-                $houseImages .= $uploadedFiles[$i]->getClientOriginalName();
+        if($uploadedFiles == null) {
+           $houseImages = $request->room_image;
+        }
+        else {
+            for($i = 0; $i < count($uploadedFiles); $i++) {
+                if($i != count($uploadedFiles)-1) {
+                    $houseImages .= $uploadedFiles[$i]->getClientOriginalName().",";
+                }
+                else {
+                    $houseImages .= $uploadedFiles[$i]->getClientOriginalName();
+                }
             }
         }
+        
 
         $form = $request->validate([
             'room_name' => 'required',
             'room_details' => 'required',
             'room_location' => 'required',
             'room_price' => 'required',
-            'room_image' => 'required|array|min:5'
+            'room_image' => 'required|min:5'
         ]);
 
         $form['room_image'] = $houseImages;
