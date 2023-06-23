@@ -40,7 +40,7 @@
                         <p><h6>  {{ $guesthouse->room_details }}  </h6></p>
                         <div class="row">
                           <div class="col text-center">
-                            <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> 3.3 - <span style="text-decoration: underline;">(69 reviews)</span>
+                            <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> {{ $averageRating }} - <span style="text-decoration: underline;">(  {{ count($ratings) }} {{ count($ratings) == 1 ? "review" : "reviews" }} )</span>
                         </div>
                         </div>
                     </div>

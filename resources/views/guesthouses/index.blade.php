@@ -85,7 +85,7 @@
 </style>
 @include('partials._navbar')
 
-<div class="container">
+{{-- <div class="container">
   <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
     <!-- Wrapper for carousel items -->
     <div class="carousel-inner">
@@ -288,16 +288,8 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div>
-</div>
+</div> --}}
 
-<div class="container">
-  <div class="row">
-
-
-    
-    
-  </div>
-</div>
 
 <div class="container-fluid mt-5">
 <div class="row" id="roomDiv" name="roomDiv">

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\GuestHouses;
+use App\Models\Rating;
+use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Faker\Provider\Image;
@@ -14,8 +16,19 @@ class GuestHouseController extends Controller
     //show all guest houses
     public function index() {
         //dd(request('search'));
+
+        $guesthouses = GuestHouses::latest()->filter(request(['search']))->get();
+
+        foreach($guesthouses as $gh) {
+            $ratings = Rating::where('room_id', $gh->id)->get();
+            $totalRatings = count($ratings);
+            $sumRatings = $ratings->sum('rating');
+            $averageRating = $totalRatings > 0 ? ($sumRatings / $totalRatings)+1 : 0;
+            $gh->averageRating = number_format($averageRating, 2);
+        }
+
         return view('guesthouses.index', [
-            'guesthouses' => GuestHouses::latest()->filter(request(['search']))->get()
+            'guesthouses' => $guesthouses
         ]);
     }
 
@@ -25,11 +38,41 @@ class GuestHouseController extends Controller
             $wishlist = Wishlist::where('user_id', auth()->user()->id)
                             ->where('room_id', $id->id)
                             ->first();
-            return view('guesthouses.show', ['guesthouse' => $id, 'wishlist' => $wishlist]);
+            
+            $rating = Rating::where('user_id', auth()->user()->id)
+            ->where('room_id', $id->id)
+            ->first();
+
+            $ratings = Rating::where('room_id', $id->id)->get();
+            $totalRatings = count($ratings);
+            $sumRatings = $ratings->sum('rating');
+            $averageRating = $totalRatings > 0 ? ($sumRatings / $totalRatings)+1 : 0;
+            $averageRating = number_format($averageRating, 2);
+
+            foreach($ratings as $r) {
+                $r->user = User::find($r->user_id);
+            }
+
+            return view('guesthouses.show', ['guesthouse' => $id,
+                'wishlist' => $wishlist, 
+                'rating' => $rating,
+                'ratings' => $ratings,
+                'averageRating' => $averageRating
+            ]);
             
         }
         else {
-            return view('guesthouses.show', ['guesthouse' => $id]);
+            $ratings = Rating::where('room_id', $id->id)->get();
+            $totalRatings = count($ratings);
+            $sumRatings = $ratings->sum('rating');
+            $averageRating = $totalRatings > 0 ? ($sumRatings / $totalRatings)+1 : 0;
+            $averageRating = number_format($averageRating, 2);
+
+            foreach($ratings as $r) {
+                $r->user = User::find($r->user_id);
+            }
+
+            return view('guesthouses.show', ['guesthouse' => $id, 'ratings' => $ratings, 'averageRating' => $averageRating]);
         }
     }
 
@@ -39,7 +82,14 @@ class GuestHouseController extends Controller
     }
 
     public function payment(Request $request, GuestHouses $guesthouse) {
-        return view('guesthouses.payment', ['guesthouse' => $guesthouse]);
+
+        $ratings = Rating::where('room_id', $guesthouse->id)->get();
+            $totalRatings = count($ratings);
+            $sumRatings = $ratings->sum('rating');
+            $averageRating = $totalRatings > 0 ? ($sumRatings / $totalRatings)+1 : 0;
+            $averageRating = number_format($averageRating, 2);
+
+        return view('guesthouses.payment', ['guesthouse' => $guesthouse, 'averageRating' => $averageRating, 'ratings' => $ratings]);
     }
 
     public function edit(GuestHouses $guesthouse) {
@@ -75,8 +125,28 @@ class GuestHouseController extends Controller
         $form['room_image'] = $houseImages;
 
         $guesthouse->update($form);
+        $rating = Rating::where('user_id', auth()->user()->id)
+            ->where('room_id', $guesthouse->id)
+            ->first();
 
-        return view('guesthouses.show', ['guesthouse' => $guesthouse])->with('message', 'GUEST HOUSE UPDATED SUCCESSFULLY!');
+            $ratings = Rating::where('room_id', $guesthouse->id)->get();
+            $totalRatings = count($ratings);
+            $sumRatings = $ratings->sum('rating');
+            $averageRating = $totalRatings > 0 ? ($sumRatings / $totalRatings)+1 : 0;
+            $averageRating = number_format($averageRating, 2);
+
+            foreach($ratings as $r) {
+                $r->user = User::find($r->user_id);
+            }
+
+
+        return view('guesthouses.show', [
+            'guesthouse' => $guesthouse, 
+            'rating' => $rating, 
+            'ratings' => $ratings, 
+            'averageRating' => $averageRating
+        ])
+        ->with('message', 'GUEST HOUSE UPDATED SUCCESSFULLY!');
         // return redirect('guesthouses.show', ['room' => $guesthouse])->with('message', 'Guest House Updated Successfully!');
     }
 

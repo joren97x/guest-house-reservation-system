@@ -134,7 +134,7 @@
     </div>
     <div class="row mb-2">
         <div class="col-2 text-center">
-            <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> 3.3 - <span style="text-decoration: underline;">(69 reviews)</span>
+            <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> {{ $averageRating }} - <span style="text-decoration: underline;"> ( {{ count($ratings) }} review{{ count($ratings) == 1 ? "" : "s" }} )</span>
         </div>
         <div class="col-8 text-start">
             <i class="fa-solid fa-location-dot" style="color: red;"></i> Located in - <span style="text-decoration: underline;"> {{ $guesthouse->room_location }} </span> 
@@ -214,60 +214,109 @@
                 </li>
             </ul>
             <hr>
+            @auth
+
+            @if($rating) 
+
             <div class="row">
-                    <h4>Rate this guest house</h4>
-                <div class="col-1">
-                    <img src="{{ asset('images/profile/default_profile.png' ) }}" class="profile_avatar" alt="">
-                </div>
-                <div class="col">
-                    <div class="row">
-                        <div class="col fw-bold">
-                            John Doe
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <button data-bs-toggle="modal" class="btn" data-bs-target="#rate_modal">
-                                <span class="fa fa-star" id="star0"></span>
-                                <span class="fa fa-star" id="star1"></span>
-                                <span class="fa fa-star" id="star2"></span>
-                                <span class="fa fa-star" id="star3"></span>
-                                <span class="fa fa-star" id="star4"></span>
-                            </button>
-                        </div>
-                    </div>
-                    
-                </div>
+                <h4>My rating  </h4>
+            <div class="col-1">
+                <img src="{{ asset('images/profile/'.auth()->user()->profile_pic ) }}" class="profile_avatar" alt="">
             </div>
-            <hr>
-            <div class="h4 text-dark">Ratings and reviews</div>
+            <div class="col">
+                <div class="row">
+                    <div class="col fw-bold">
+                        {{auth()->user()->name }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                            <span class="fa fa-star" style="color:{{ $rating->rating >= 0 ? "rgb(255, 190, 11)" : "" }}"></span>
+                            <span class="fa fa-star" style="color:{{ $rating->rating >= 1 ? "rgb(255, 190, 11)" : "" }}"></span>
+                            <span class="fa fa-star" style="color:{{ $rating->rating >= 2 ? "rgb(255, 190, 11)" : "" }}"></span>
+                            <span class="fa fa-star" style="color:{{ $rating->rating >= 3 ? "rgb(255, 190, 11)" : "" }}"></span>
+                            <span class="fa fa-star" style="color:{{ $rating->rating >= 4 ? "rgb(255, 190, 11)" : "" }}"></span>
+                            <span> - {{ $rating->created_at->diffForHumans() }} </span>
+                    </div>
+                </div>
+                <div class="row">
+                    {{ $rating->review }}
+                </div>
+                
+            </div>
+        </div>
+
+            @else
+            <div class="row">
+                <h4>Rate this guest house {{ $rating }} </h4>
+            <div class="col-1">
+                <img src="{{ asset('images/profile/'.auth()->user()->profile_pic ) }}" class="profile_avatar" alt="">
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col fw-bold">
+                        {{auth()->user()->name }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button data-bs-toggle="modal" class="btn" data-bs-target="#rate_modal">
+                            <span class="fa fa-star" id="star0"></span>
+                            <span class="fa fa-star" id="star1"></span>
+                            <span class="fa fa-star" id="star2"></span>
+                            <span class="fa fa-star" id="star3"></span>
+                            <span class="fa fa-star" id="star4"></span>
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+            @endif
+
+        <hr>
+
+            @endauth
+            <div class="h4 text-dark">Ratings and reviews  </div>
             <div class="row h5">
                 <div class="col">
-                    <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> 3.3 - <span style="text-decoration: underline;">(69 reviews)</span>
+                    <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> {{ $averageRating }} - <span style="text-decoration: underline;"> ( {{ count($ratings) }} review{{ count($ratings) == 1 ? "" : "s" }} )</span>
                 </div>
             </div>
 
             <div class="row review-section justify-content-center">
 
-                @for($i = 0; $i < 4; $i++)
+                @if($ratings) 
+
+                @foreach($ratings as $rat)
 
                 <div class="col-5 m-2 border">
                     <div class="row mt-2">
                         <div class="col-1">
-                            <img src="{{ asset('images/profile/default_profile.png' ) }}" class="profile_avatar" alt="">
+                            <img src="{{ asset('images/profile/'.$rat->user->profile_pic ) }}" class="profile_avatar" alt="">
                         </div>
-                        <div class="col-10 ms-3 mt-2 fw-bold">
-                            John Doe 
+                        <div class="col-10 ms-3 mt-2 ">
+                            <span class="fw-bold"> {{ $rat->user->name }} </span>
+                            <div class="row">
+                                <div class="col">
+                                    <span class="fa fa-star" style="color:{{ $rat->rating >= 0 ? "rgb(255, 190, 11)" : "" }}"></span>
+                                    <span class="fa fa-star" style="color:{{ $rat->rating >= 1 ? "rgb(255, 190, 11)" : "" }}"></span>
+                                    <span class="fa fa-star" style="color:{{ $rat->rating >= 2 ? "rgb(255, 190, 11)" : "" }}"></span>
+                                    <span class="fa fa-star" style="color:{{ $rat->rating >= 3 ? "rgb(255, 190, 11)" : "" }}"></span>
+                                    <span class="fa fa-star" style="color:{{ $rat->rating >= 4 ? "rgb(255, 190, 11)" : "" }}"></span>
+                                    <span> - {{ $rat->created_at->diffForHumans() }} </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row m-1">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        {{ $rat->review }}
                     </div>
                 </div>
 
-                @endfor
+                @endforeach
+
+                @endif
 
 
             </div>
