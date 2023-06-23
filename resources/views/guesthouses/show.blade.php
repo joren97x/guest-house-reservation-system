@@ -214,21 +214,47 @@
                 </li>
             </ul>
             <hr>
-            <div class="h4 text-dark">Reviews</div>
+            <div class="row">
+                    <h4>Rate this guest house</h4>
+                <div class="col-1">
+                    <img src="{{ asset('images/profile/default_profile.png' ) }}" class="profile_avatar" alt="">
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col fw-bold">
+                            John Doe
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button data-bs-toggle="modal" class="btn" data-bs-target="#rate_modal">
+                                <span class="fa fa-star" id="star0"></span>
+                                <span class="fa fa-star" id="star1"></span>
+                                <span class="fa fa-star" id="star2"></span>
+                                <span class="fa fa-star" id="star3"></span>
+                                <span class="fa fa-star" id="star4"></span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <hr>
+            <div class="h4 text-dark">Ratings and reviews</div>
             <div class="row h5">
                 <div class="col">
                     <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> 3.3 - <span style="text-decoration: underline;">(69 reviews)</span>
                 </div>
             </div>
 
-            <div class="row review-section">
+            <div class="row review-section justify-content-center">
 
-                @for($i = 0; $i < 5; $i++)
+                @for($i = 0; $i < 4; $i++)
 
                 <div class="col-5 m-2 border">
                     <div class="row mt-2">
                         <div class="col-1">
-                            <img src="{{ asset('images/profile/'.auth()->user()->profile_pic ) }}" class="profile_avatar" alt="">
+                            <img src="{{ asset('images/profile/default_profile.png' ) }}" class="profile_avatar" alt="">
                         </div>
                         <div class="col-10 ms-3 mt-2 fw-bold">
                             John Doe 
@@ -242,6 +268,7 @@
                 </div>
 
                 @endfor
+
 
             </div>
 
@@ -298,6 +325,35 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="rate_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <form action="/rooms/rate/{{ $guesthouse->id }}" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Rate this guest house</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+                @csrf
+                <div class="container justify-content-center d-flex h2">
+                    <span class="fa fa-star" id="modal_star0"></span>
+                    <span class="fa fa-star" id="modal_star1"></span>
+                    <span class="fa fa-star" id="modal_star2"></span>
+                    <span class="fa fa-star" id="modal_star3"></span>
+                    <span class="fa fa-star" id="modal_star4"></span>
+                </div>
+                <input type="hidden" name="rating" id="rating">
+                <textarea name="review" id="" cols="30" rows="2" class="form-control" placeholder="Write a review.."></textarea>
+                </div>
+        <div class="modal-footer">
+            <button type="button submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
+
 <script>
     function openFullscreen(img) {
         var overlay = document.createElement("div");
@@ -375,6 +431,47 @@
     })
 @endif
 @endif
+
+$(document).ready(function() {
+  var canInteract = true; // Flag to indicate if stars can be interacted with
+  
+  // When a star is hovered
+  $(".fa-star").hover(function() {
+    if (canInteract) {
+      // Get the index of the hovered star
+      var starIndex = $(this).index();
+      // Color the star and all stars before it
+      for (var i = 0; i <= starIndex; i++) {
+        $('#star' + i).css('color', 'rgb(255, 190, 11)');
+        $('#modal_star' + i).css('color', 'rgb(255, 190, 11)');
+      }
+    }
+  }, function() {
+    if (canInteract) {
+      // Change the color of all stars back to the original color
+      for (var i = 0; i < 5; i++) {
+        $('#star' + i).css('color', 'black');
+        $('#modal_star' + i).css('color', 'black');
+      }
+    }
+  });
+  
+  // When a star is clicked
+  $(".fa-star").click(function() {
+    if (canInteract) {
+      canInteract = false; // Disable further interaction with the stars
+      // Get the index of the clicked star
+      var starIndex = $(this).index();
+      $('#rating').val(starIndex)
+      // Color the star and all stars before it
+      for (var i = 0; i <= starIndex; i++) {
+        $('#star' + i).css('color', 'rgb(255, 190, 11)');
+        $('#modal_star' + i).css('color', 'rgb(255, 190, 11)');
+      }
+    }
+  });
+});
+
 
 </script>
 @include('partials._footer')

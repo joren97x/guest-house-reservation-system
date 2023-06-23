@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\GuestHouseController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\WishlistController;
 use App\Models\Reservation;
@@ -39,6 +40,7 @@ Route::delete('/reservation/delete', [ReservationController::class, 'delete'])->
 Route::put('/reservation/cancel', [ReservationController::class, 'cancel'])->middleware('auth');
 Route::get('/reservation/sort/{sort}', [ReservationController::class, 'sort'])->middleware('auth');
 
+Route::post('/rooms/rate/{guesthouse_id}', [RatingController::class, 'store'])->middleware('auth');
 
 Route::get('/dashboard', [HomeController::class, 'index'])->middleware('auth');
 Route::get('/dashboard/reservations', [HomeController::class, 'show'])->middleware('auth');
