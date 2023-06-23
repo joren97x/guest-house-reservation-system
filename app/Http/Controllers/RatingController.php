@@ -11,6 +11,10 @@ class RatingController extends Controller
 
     public function store(Request $request, $guesthouse_id) {
 
+        $request->validate([
+            'rating' => 'required'
+        ]);
+
         Rating::create([
             'user_id' => auth()->user()->id,
             'room_id' => $guesthouse_id,

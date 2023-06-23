@@ -259,7 +259,11 @@
                     </div>
                 </div>
                 <div class="row">
+                    
                     <div class="col">
+                        @error('rating')
+                            <p class="text-danger"> {{ $message}} </p>
+                        @enderror
                         <button data-bs-toggle="modal" class="btn" data-bs-target="#rate_modal">
                             <span class="fa fa-star" id="star0"></span>
                             <span class="fa fa-star" id="star1"></span>
@@ -393,6 +397,9 @@
                     <span class="fa fa-star" id="modal_star4"></span>
                 </div>
                 <input type="hidden" name="rating" id="rating">
+                @error('rating')
+                    <p class="text-danger"> {{ $message}} </p>
+                @enderror
                 <textarea name="review" id="" cols="30" rows="2" class="form-control" placeholder="Write a review.."></textarea>
                 </div>
         <div class="modal-footer">
