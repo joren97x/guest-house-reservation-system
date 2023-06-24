@@ -165,7 +165,10 @@ class GuestHouseController extends Controller
     }
 
     public function destroy(GuestHouses $guesthouse) {
+        $wishlist = Wishlist::where('room_id', $guesthouse->id)->get();
+        $wishlist->each->delete();
         $guesthouse->delete();
+
         return redirect('/')->with('message', "GUEST HOUSE DELETED SUCCESSFULLY!");
     }
 
