@@ -119,6 +119,19 @@
         text-decoration: underline;
         cursor: pointer;
     }
+    #rating-container {
+        background-color: rgba(0, 0, 0, 0.8); 
+        color: white; 
+        position: absolute; 
+        width: 170px; 
+        margin-left: 50px;
+        visibility: hidden;
+    }
+    
+    .rating-hover:hover + #rating-container{
+        visibility: visible;
+        font-size: 15px
+    }
 </style>
 @include('partials._navbar')
 
@@ -134,7 +147,18 @@
     </div>
     <div class="row mb-2">
         <div class="col-2 text-center">
-            <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> {{ $averageRating }} - <span style="text-decoration: underline;"> ( {{ count($ratings) }} review{{ count($ratings) == 1 ? "" : "s" }} )</span>
+            <span class="rating-hover">
+                <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> {{ $averageRating }} - <span style="text-decoration: underline;"> ( {{ count($ratings) }} review{{ count($ratings) == 1 ? "" : "s" }} )</span>
+            </span>
+            @if($ratings) 
+            <div class="container" id="rating-container">
+                @foreach($ratings as $r)
+                <div class="row ms-1">
+                    {{ $r->user->name }}
+                </div>
+                @endforeach
+            </div>
+            @endif 
         </div>
         <div class="col-8 text-start">
             <i class="fa-solid fa-location-dot" style="color: red;"></i> Located in - <span style="text-decoration: underline;"> {{ $guesthouse->room_location }} </span> 
@@ -284,7 +308,16 @@
             <div class="h4 text-dark">Ratings and reviews  </div>
             <div class="row h5">
                 <div class="col">
-                    <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> {{ $averageRating }} - <span style="text-decoration: underline;"> ( {{ count($ratings) }} review{{ count($ratings) == 1 ? "" : "s" }} )</span>
+                    <span class="rating-hover">
+                        <i class="fa-solid fa-star" style="color: rgb(255, 190, 11);"></i> {{ $averageRating }} - <span style="text-decoration: underline;"> ( {{ count($ratings) }} review{{ count($ratings) == 1 ? "" : "s" }} )</span>
+                    </span>
+                    <div class="container" id="rating-container">
+                        @foreach($ratings as $r2)
+                        <div class="row ms-1 fw-normal">
+                            {{ $r2->user->name }}
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
 

@@ -43,7 +43,12 @@ class GuestHouseController extends Controller
             ->where('room_id', $id->id)
             ->first();
 
-            $ratings = Rating::where('room_id', $id->id)->get();
+            $ratings = Rating::where('room_id', $id->id)
+            ->whereIn('user_id', function($query) {
+                $query->select('id')->from('users');
+            })
+            ->get();
+
             $totalRatings = count($ratings);
             $sumRatings = $ratings->sum('rating');
             $averageRating = $totalRatings > 0 ? ($sumRatings / $totalRatings)+1 : 0;
@@ -52,6 +57,7 @@ class GuestHouseController extends Controller
             foreach($ratings as $r) {
                 $r->user = User::find($r->user_id);
             }
+
 
             return view('guesthouses.show', ['guesthouse' => $id,
                 'wishlist' => $wishlist, 
@@ -62,7 +68,11 @@ class GuestHouseController extends Controller
             
         }
         else {
-            $ratings = Rating::where('room_id', $id->id)->get();
+            $ratings = Rating::where('room_id', $id->id)
+            ->whereIn('user_id', function($query) {
+                $query->select('id')->from('users');
+            })
+            ->get();
             $totalRatings = count($ratings);
             $sumRatings = $ratings->sum('rating');
             $averageRating = $totalRatings > 0 ? ($sumRatings / $totalRatings)+1 : 0;
@@ -129,7 +139,11 @@ class GuestHouseController extends Controller
             ->where('room_id', $guesthouse->id)
             ->first();
 
-            $ratings = Rating::where('room_id', $guesthouse->id)->get();
+            $ratings = Rating::where('room_id', $guesthouse->id)
+            ->whereIn('user_id', function($query) {
+                $query->select('id')->from('users');
+            })
+            ->get();
             $totalRatings = count($ratings);
             $sumRatings = $ratings->sum('rating');
             $averageRating = $totalRatings > 0 ? ($sumRatings / $totalRatings)+1 : 0;
